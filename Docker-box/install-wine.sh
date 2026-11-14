@@ -1,8 +1,8 @@
 #!/bin/bash
 set -euxo pipefail
 
-MONO_VER="10.3.0"
-WINE_VER="10.20"
+MONO_VER="11.3.0"
+WINE_VER="11.21"
 WINE_TYPE="staging-tkg-amd64-wow64"
 ########################################################
 
@@ -16,8 +16,8 @@ rsync -a wine-installer/ ~/wine/
 
 echo -e "Installing Wine-Mono..."
 mkdir -p ~/wine/share/wine/mono
-curl -sL -o ~/wine/share/wine/mono/wine-mono-${MONO_VER}-x86.msi \
-    "https://dl.winehq.org/wine/wine-mono/${MONO_VER}/wine-mono-${MONO_VER}-x86.msi"
+curl -fsSL -o ~/wine/share/wine/mono/wine-mono-${MONO_VER}-x86.msi \
+    "https://github.com/wine-mono/wine-mono/releases/download/wine-mono-${MONO_VER}/wine-mono-${MONO_VER}-x86.msi"
 
 echo -e "Installing Winetricks..."
 wget https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks
@@ -40,7 +40,7 @@ apt-get install -y libopus0 liborc-0.4-0t64 libpam-modules libpam-modules-bin li
 apt-get install -y libpulse0 libraqm0 librtmp1 libsasl2-2 libsasl2-modules-db libselinux1 libsemanage-common libsemanage2 libsepol2 libsharpyuv0
 apt-get install -y libsndfile1 libssh2-1t64 libssl3t64 libstdc++6 libsystemd0 libtiff6 libudev1 libunistring5 libunwind8 libusb-1.0-0
 apt-get install -y libvorbis0a libvorbisenc2 libwayland-client0 libwebp7 libx11-6 libx11-data libx11-xcb1 libxau6 libxcb1
-apt-get install -y libxdmcp6 libxext6 libxkbcommon0 libxkbregistry0 libxml2 libxpm4 libz-mingw-w64 libzstd1 lsb-base
+apt-get install -y libxdmcp6 libxext6 libxkbcommon0 libxkbregistry0 libxml2-16 libxpm4 libz-mingw-w64 libzstd1 lsb-base
 apt-get install -y ocl-icd-libopencl1 passwd sysvinit-utils x11-common xfonts-encodings xfonts-utils xkb-data zlib1g
 
 apt-get install -y libcups2t64 libglu1-mesa libgnutls30t64 libgsm1 libncurses6 libodbccr2 libodbc2 libosmesa6 libsane1 libsdl2-2.0-0
