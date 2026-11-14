@@ -59,7 +59,7 @@ RUN chmod 700 "$XDG_RUNTIME_DIR"
 #RUN apt-get remove --purge libges-1.0-0
 
 #fex-emu not good for winetricks
-RUN xvfb-run winetricks -q vcrun2022
+RUN xvfb-run winetricks -q vcrun2026
 
 ###Steam block
 COPY init-steam.sh /
