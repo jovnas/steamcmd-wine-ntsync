@@ -2,22 +2,23 @@
 set -euxo pipefail
 
 MONO_VER="11.3.0"
+MONO_SHA256="df2dfc1665c2511882e7cabd56eafd0c0a3d94e5a7e86f969277f6c189d418d3"
 WINE_VER="11.21"
 WINE_TYPE="${WINE_TYPE:-staging-tkg-amd64-wow64}"
 ########################################################
 
-echo -e "Downloading Wine..."
-mkdir -p wine-installer
-wget -qO- "https://github.com/Kron4ek/Wine-Builds/releases/download/${WINE_VER}/wine-${WINE_VER}-${WINE_TYPE}.tar.xz" | tar -xJ -C wine-installer --strip-components=1
-
-echo -e "Installing Wine..."
-mkdir -p ~/wine
-rsync -a wine-installer/ ~/wine/
+echo "Downloading and extracting Wine..."
+mkdir -p "$HOME/wine"
+wget -qO- "https://github.com/Kron4ek/Wine-Builds/releases/download/${WINE_VER}/wine-${WINE_VER}-${WINE_TYPE}.tar.xz" \
+    | tar -xJ -C "$HOME/wine" --strip-components=1
 
 echo -e "Installing Wine-Mono..."
-mkdir -p ~/wine/share/wine/mono
-curl -fsSL -o ~/wine/share/wine/mono/wine-mono-${MONO_VER}-x86.msi \
+mono_msi="$HOME/wine/share/wine/mono/wine-mono-${MONO_VER}-x86.msi"
+mkdir -p "${mono_msi%/*}"
+# Retry interrupted transfers and avoid HTTP/2 framing errors on this download.
+curl -fsSL --http1.1 --retry 3 --retry-all-errors --max-time 120 -o "$mono_msi" \
     "https://github.com/wine-mono/wine-mono/releases/download/wine-mono-${MONO_VER}/wine-mono-${MONO_VER}-x86.msi"
+printf '%s  %s\n' "$MONO_SHA256" "$mono_msi" | sha256sum --check
 
 echo -e "Installing Winetricks..."
 wget https://raw.githubusercontent.com/Winetricks/winetricks/f3890f670867b5ffbc3938726db45c0f7d16c8ba/src/winetricks
