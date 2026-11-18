@@ -45,7 +45,11 @@ chmod +x /usr/local/bin/steamcmd
 ln -sf /usr/local/bin/steamcmd /usr/local/bin/steamcmd.sh
 
 # Run SteamCMD once to allow it to self-update and create folders
-steamcmd +quit
+if ! steamcmd +quit || [ ! -s "$steamcmd_dir/linux32/steamclient.so" ] || [ ! -s "$steamcmd_dir/linux64/steamclient.so" ]; then
+    echo "SteamCMD bootstrap failed before both SDK libraries were installed. Build filesystem space:" >&2
+    df -h "$steamcmd_dir" /tmp >&2
+    exit 1
+fi
 
 mkdir -p ~/.steam
 chmod -R 777 ~/.steam
