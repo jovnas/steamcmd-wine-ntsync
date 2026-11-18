@@ -31,6 +31,7 @@ ENV WINEPREFIX=/root/.wine
 ENV WINEARCH=win64
 
 # Install Wine and Winetricks
+ARG WINE_TYPE=staging-tkg-amd64-wow64
 COPY install-wine.sh winetricks-vcrun2026.patch /
 RUN bash /install-wine.sh \
  && rm /install-wine.sh /winetricks-vcrun2026.patch

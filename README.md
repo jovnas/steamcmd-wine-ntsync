@@ -23,6 +23,12 @@ If Wine reports an execute-access page fault while creating its prefix during th
 (cd Docker-box && bash build.sh --progress=plain --build-arg WINE_SETUP_BOX64_DYNAREC=0)
 ```
 
+If the fault persists with Dynarec disabled, try the upstream Wine 11.22 WoW64 build. This swaps the prebuilt Wine archive while keeping the Box64 package and the redistributable setup the same.
+
+```bash
+(cd Docker-box && bash build.sh --progress=plain --build-arg WINE_TYPE=amd64-wow64)
+```
+
 ## DockerHUB
 https://hub.docker.com/r/tsxcloud/steamcmd-wine-ntsync
 
