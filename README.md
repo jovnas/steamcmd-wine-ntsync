@@ -1,5 +1,5 @@
 ## Base information
-The current Box64 build uses Ubuntu 26.04, Wine 11.22, and Box64 0.4.4 with Box32 support. Its Wine build includes staging, TKG, NTSync, and WoW64. Additionally, Wine Mono and the Visual C++ 2026 Redistributable are preinstalled.
+The current Box64 build uses Ubuntu 26.04, Wine 11.22, and a pinned prebuilt Box64 0.4.5 snapshot with Box32 support. Its Wine build includes staging, TKG, NTSync, and WoW64. Additionally, Wine Mono and the Visual C++ 2026 Redistributable are preinstalled.
 
 This Docker build is designed to be compatible with https://hub.docker.com/r/steamcmd/steamcmd
 

@@ -21,6 +21,8 @@ curl -fsSL -o ~/wine/share/wine/mono/wine-mono-${MONO_VER}-x86.msi \
 
 echo -e "Installing Winetricks..."
 wget https://raw.githubusercontent.com/Winetricks/winetricks/f3890f670867b5ffbc3938726db45c0f7d16c8ba/src/winetricks
+# Pin the Microsoft installers and reject checksum mismatches in quiet builds.
+patch --batch --forward --fuzz=0 winetricks /winetricks-vcrun2026.patch
 chmod +x winetricks
 mv winetricks /usr/local/bin/
 

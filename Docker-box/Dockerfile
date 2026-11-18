@@ -9,7 +9,7 @@ ENV runx64=${RUNX64}
 # Install essential tools
 RUN apt-get update \
  && apt-get upgrade --yes
-RUN apt-get install --yes wget build-essential git curl unzip rsync tar unar libc6 libstdc++6 file ca-certificates gnupg squashfs-tools software-properties-common
+RUN apt-get install --yes wget git curl patch unzip rsync tar unar libc6 libstdc++6 file ca-certificates gnupg squashfs-tools software-properties-common
 
 # Install optional tools for convenience
 RUN apt-get install --yes mc nano unzip file gnupg lsof kmod ack
@@ -31,9 +31,9 @@ ENV WINEPREFIX=/root/.wine
 ENV WINEARCH=win64
 
 # Install Wine and Winetricks
-COPY install-wine.sh /
+COPY install-wine.sh winetricks-vcrun2026.patch /
 RUN bash /install-wine.sh \
- && rm /install-wine.sh
+ && rm /install-wine.sh /winetricks-vcrun2026.patch
 
 # Install box64
 COPY install-box.sh /

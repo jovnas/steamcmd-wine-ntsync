@@ -12,19 +12,20 @@ elif [ "$TARGETARCH" = "amd64" ]; then
 fi
 
 
-mkdir -p ~/steamcmd
+steamcmd_dir="$HOME/steamcmd"
+mkdir -p "$steamcmd_dir"
 
 curl -fsSL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" \
-  | tar -xz -C ~/steamcmd
-chmod +x ~/steamcmd/steamcmd.sh
+  | tar -xz -C "$steamcmd_dir"
+chmod +x "$steamcmd_dir/steamcmd.sh"
 
-cat <<'EOF' >/usr/local/bin/steamcmd
+cat <<EOF >/usr/local/bin/steamcmd
 #!/bin/bash
-if [ -n "${runx64:-}" ]; then
+if [ -n "\${runx64:-}" ]; then
     # Valve's launcher uses DEBUGGER to prefix the 32-bit SteamCMD binary.
-    export DEBUGGER="$runx64"
+    export DEBUGGER="\$runx64"
 fi
-exec "$HOME/steamcmd/steamcmd.sh" "$@"
+exec "$steamcmd_dir/steamcmd.sh" "\$@"
 EOF
 
 chmod +x /usr/local/bin/steamcmd
@@ -35,8 +36,8 @@ steamcmd +quit
 
 mkdir -p ~/.steam
 chmod -R 777 ~/.steam
-ln -sf ~/steamcmd/linux32 ~/.steam/sdk32
-ln -sf ~/steamcmd/linux64 ~/.steam/sdk64
+ln -sf "$steamcmd_dir/linux32" ~/.steam/sdk32
+ln -sf "$steamcmd_dir/linux64" ~/.steam/sdk64
 
 ln -sf ~/.steam/sdk32/steamclient.so ~/.steam/sdk32/steamservice.so
 ln -sf ~/.steam/sdk64/steamclient.so ~/.steam/sdk64/steamservice.so
