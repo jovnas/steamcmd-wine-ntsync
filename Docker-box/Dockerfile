@@ -7,7 +7,8 @@ ARG RUNX64="box64"
 ENV runx64=${RUNX64}
 
 # Install essential tools
-RUN apt-get update
+RUN apt-get update \
+ && apt-get upgrade --yes
 RUN apt-get install --yes wget build-essential git curl unzip rsync tar unar libc6 libstdc++6 file ca-certificates gnupg squashfs-tools software-properties-common
 
 # Install optional tools for convenience
@@ -58,7 +59,7 @@ RUN chmod 700 "$XDG_RUNTIME_DIR"
 #RUN apt-get remove --purge libges-1.0-0
 
 #fex-emu not good for winetricks
-RUN xvfb-run winetricks -q vcrun2022
+RUN xvfb-run winetricks -q vcrun2026
 
 ###Steam block
 COPY init-steam.sh /

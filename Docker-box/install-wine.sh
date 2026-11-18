@@ -17,10 +17,10 @@ rsync -a wine-installer/ ~/wine/
 echo -e "Installing Wine-Mono..."
 mkdir -p ~/wine/share/wine/mono
 curl -fsSL -o ~/wine/share/wine/mono/wine-mono-${MONO_VER}-x86.msi \
-    "https://dl.winehq.org/wine/wine-mono/${MONO_VER}/wine-mono-${MONO_VER}-x86.msi"
+    "https://github.com/wine-mono/wine-mono/releases/download/wine-mono-${MONO_VER}/wine-mono-${MONO_VER}-x86.msi"
 
 echo -e "Installing Winetricks..."
-wget https://raw.githubusercontent.com/Winetricks/winetricks/20260125/src/winetricks
+wget https://raw.githubusercontent.com/Winetricks/winetricks/f3890f670867b5ffbc3938726db45c0f7d16c8ba/src/winetricks
 chmod +x winetricks
 mv winetricks /usr/local/bin/
 
