@@ -33,9 +33,12 @@ chmod +x "$steamcmd_dir/steamcmd.sh"
 cat <<EOF >/usr/local/bin/steamcmd
 #!/bin/bash
 if [ -n "\${runx64:-}" ]; then
-    # Keep the x86 launcher selected even when SteamCMD restarts after an update.
     export STEAM_PLATFORM=linux32
-    # Valve's launcher uses DEBUGGER to prefix the 32-bit SteamCMD binary.
+    # The bootstrap archive only contains linux32. Use linux64 after self-update.
+    if [ -x "$steamcmd_dir/linux64/steamcmd" ]; then
+        export STEAM_PLATFORM=linux64
+    fi
+    # Valve's launcher uses DEBUGGER to prefix the selected SteamCMD binary.
     export DEBUGGER="\$runx64"
 fi
 exec "$steamcmd_dir/steamcmd.sh" "\$@"
@@ -44,12 +47,21 @@ EOF
 chmod +x /usr/local/bin/steamcmd
 ln -sf /usr/local/bin/steamcmd /usr/local/bin/steamcmd.sh
 
-# Run SteamCMD once to allow it to self-update and create folders
-if ! steamcmd +quit || [ ! -s "$steamcmd_dir/linux32/steamclient.so" ] || [ ! -s "$steamcmd_dir/linux64/steamclient.so" ]; then
+# The initial run can fail after extraction when the updater restarts under Box32.
+steamcmd +quit || echo "SteamCMD exited during bootstrap. Checking the installed files." >&2
+if [ ! -x "$steamcmd_dir/linux64/steamcmd" ] || [ ! -s "$steamcmd_dir/linux32/steamclient.so" ] || [ ! -s "$steamcmd_dir/linux64/steamclient.so" ]; then
     echo "SteamCMD bootstrap failed before both SDK libraries were installed. Build filesystem space:" >&2
     df -h "$steamcmd_dir" /tmp >&2
     exit 1
 fi
+
+# SteamCMD can exit zero even when Steam API initialization fails.
+if ! steamcmd_help=$(steamcmd +help +quit 2>&1) || [[ "$steamcmd_help" != *$'Usage:\tsteamcmd '* ]]; then
+    printf '%s\n' "$steamcmd_help" >&2
+    echo "SteamCMD failed to initialize and print command help." >&2
+    exit 1
+fi
+printf '%s\n' "$steamcmd_help"
 
 mkdir -p ~/.steam
 chmod -R 777 ~/.steam
