@@ -58,8 +58,9 @@ RUN chmod 700 "$XDG_RUNTIME_DIR"
 # winegstreamer sometimes causes a bug that prevents Wineprefix creation; this command removes it
 #RUN apt-get remove --purge libges-1.0-0
 
-#fex-emu not good for winetricks
-RUN xvfb-run winetricks -q vcrun2026
+# Allow testing Wine prefix setup with Box64's interpreter on ARM64.
+ARG WINE_SETUP_BOX64_DYNAREC=1
+RUN BOX64_LOG=1 BOX64_DYNAREC="$WINE_SETUP_BOX64_DYNAREC" xvfb-run winetricks -q vcrun2026
 
 ###Steam block
 COPY init-steam.sh /

@@ -17,6 +17,12 @@ docker run --rm tsxcloud/steamcmd-wine-ntsync:11.22-arm64-box +help +quit
 
 Use the local `tsxcloud/steamcmd-wine-ntsync:11.22-arm64-box` tag in your Valheim service's `image:` setting. Keep your existing world volumes and server configuration. Check the server logs for successful startup, then verify that a client can join.
 
+If Wine reports an execute-access page fault while creating its prefix during the build, try Box64's interpreter for the prefix setup step. This can take longer. If it still fails, capture the Box64 startup lines and the host page size from `getconf PAGESIZE`.
+
+```bash
+(cd Docker-box && bash build.sh --progress=plain --build-arg WINE_SETUP_BOX64_DYNAREC=0)
+```
+
 ## DockerHUB
 https://hub.docker.com/r/tsxcloud/steamcmd-wine-ntsync
 
