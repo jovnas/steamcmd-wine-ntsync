@@ -1,5 +1,5 @@
 ## Base information
-The current Box64 build uses Ubuntu 26.04, Wine 11.22, and a pinned prebuilt Box64 0.4.5 snapshot with Box32 support. Its Wine build includes staging, TKG, NTSync, and WoW64. Additionally, Wine Mono and the Visual C++ 2026 Redistributable are preinstalled.
+The current Box64 build uses Ubuntu 26.04, Wine 11.21, and a pinned prebuilt Box64 0.4.5 snapshot with Box32 support. Its Wine build includes staging, TKG, NTSync, and WoW64. Additionally, Wine Mono and the Visual C++ 2026 Redistributable are preinstalled.
 
 This Docker build is designed to be compatible with https://hub.docker.com/r/steamcmd/steamcmd
 
@@ -12,22 +12,12 @@ On a Pi 5 running a 64-bit OS, build from this checkout and check that SteamCMD 
 
 ```bash
 (cd Docker-box && bash build.sh)
-docker run --rm tsxcloud/steamcmd-wine-ntsync:11.22-arm64-box +help +quit
+docker run --rm tsxcloud/steamcmd-wine-ntsync:11.21-arm64-box +help +quit
 ```
 
-Use the local `tsxcloud/steamcmd-wine-ntsync:11.22-arm64-box` tag in your Valheim service's `image:` setting. Keep your existing world volumes and server configuration. Check the server logs for successful startup, then verify that a client can join.
+Use the local `tsxcloud/steamcmd-wine-ntsync:11.21-arm64-box` tag in your Valheim service's `image:` setting. Keep your existing world volumes and server configuration. Check the server logs for successful startup, then verify that a client can join.
 
-If Wine reports an execute-access page fault while creating its prefix during the build, try Box64's interpreter for the prefix setup step. This can take longer. If it still fails, capture the Box64 startup lines and the host page size from `getconf PAGESIZE`.
-
-```bash
-(cd Docker-box && bash build.sh --progress=plain --build-arg WINE_SETUP_BOX64_DYNAREC=0)
-```
-
-If the fault persists with Dynarec disabled, try the upstream Wine 11.22 WoW64 build. This swaps the prebuilt Wine archive while keeping the Box64 package and the redistributable setup the same.
-
-```bash
-(cd Docker-box && bash build.sh --progress=plain --build-arg WINE_TYPE=amd64-wow64)
-```
+The Box64 image pins Wine 11.21 for Pi 5 testing. On a Pi with a 39-bit virtual address space, Wine 11.22 failed during prefix creation with both the TkG Staging and upstream WoW64 builds.
 
 ## DockerHUB
 https://hub.docker.com/r/tsxcloud/steamcmd-wine-ntsync

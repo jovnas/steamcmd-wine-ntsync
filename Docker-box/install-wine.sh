@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 MONO_VER="11.3.0"
-WINE_VER="11.22"
+WINE_VER="11.21"
 WINE_TYPE="${WINE_TYPE:-staging-tkg-amd64-wow64}"
 ########################################################
 

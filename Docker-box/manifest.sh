@@ -1,4 +1,4 @@
-BOX_WINE_VER="11.22"
+BOX_WINE_VER="11.21"
 FEX_WINE_VER="10.20"
 
 docker manifest create --amend "tsxcloud/steamcmd-wine-ntsync:arm64-fex" \
