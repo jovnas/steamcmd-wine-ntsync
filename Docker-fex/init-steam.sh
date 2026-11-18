@@ -3,8 +3,8 @@ set -euo pipefail
 
 #32-bit libs for Steam
 dpkg --add-architecture armhf
-apt update
-apt install -y libc6:armhf libpthread-stubs0-dev:armhf libncurses6:armhf libstdc++6:armhf
+apt-get update
+apt-get install -y libc6:armhf libpthread-stubs0-dev:armhf libncurses6:armhf libstdc++6:armhf
 
 
 mkdir -p ~/steamcmd

@@ -22,7 +22,7 @@ ENV LC_ALL=en_US.UTF-8
 
 # `cabextract` is required by winetricks to install most libraries
 # `xvfb` is needed to run Wine with a virtual display, since some Windows programs require a display (used with `xvfb-run`)
-RUN apt install --yes cabextract xvfb
+RUN apt-get install --yes cabextract xvfb
 
 ###Wine block
 ENV WINEPREFIX=/root/.wine

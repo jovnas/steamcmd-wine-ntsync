@@ -12,7 +12,7 @@ wget https://github.com/AndreRH/hangover/releases/download/hangover-${HANGOVER_V
 tar -xf hangover_${HANGOVER_VER}_ubuntu2504_plucky_arm64.tar
 
 echo -e "Installing Wine..."
-apt install -y ./hangover-*.deb
+apt-get install -y ./hangover-*.deb
 cd ..
 
 echo -e "Installing Wine-Mono..."

@@ -10,7 +10,7 @@ RUN apt-get update
 RUN apt-get install --yes wget build-essential git curl unzip rsync tar unar libc6 libstdc++6 file ca-certificates gnupg squashfs-tools software-properties-common
 
 # Install optional tools for convenience
-RUN apt-get install --yes mc nano unzip file gnupg lsof kmod ack patchelf sudo 
+RUN apt-get install --yes mc nano unzip file gnupg lsof kmod ack patchelf sudo
 
 # Add Unicode support
 RUN apt-get install -y locales \
@@ -22,7 +22,7 @@ ENV LC_ALL=en_US.UTF-8
 
 # `cabextract` is required by winetricks to install most libraries
 # `xvfb` is needed to run Wine with a virtual display, since some Windows programs require a display (used with `xvfb-run`)
-RUN apt install --yes cabextract xvfb
+RUN apt-get install --yes cabextract xvfb
 
 # Install box64
 COPY install-box.sh /

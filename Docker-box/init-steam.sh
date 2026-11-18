@@ -14,12 +14,12 @@ Architectures: armhf
 Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 EOF
     dpkg --add-architecture armhf
-    apt update
-    apt install -y libc6:armhf libpthread-stubs0-dev:armhf libncurses6:armhf libstdc++6:armhf
+    apt-get update
+    apt-get install -y libc6:armhf libpthread-stubs0-dev:armhf libncurses6:armhf libstdc++6:armhf
 elif [ "$TARGETARCH" = "amd64" ]; then
     dpkg --add-architecture i386
-    apt update
-    apt install -y libc6:i386 libpthread-stubs0-dev:i386 lib32gcc-s1 lib32stdc++6 lib32z1 libncurses6:i386
+    apt-get update
+    apt-get install -y libc6:i386 libpthread-stubs0-dev:i386 lib32gcc-s1 lib32stdc++6 lib32z1 libncurses6:i386
 fi
 
 
@@ -33,6 +33,8 @@ chmod +x "$steamcmd_dir/steamcmd.sh"
 cat <<EOF >/usr/local/bin/steamcmd
 #!/bin/bash
 if [ -n "\${runx64:-}" ]; then
+    # Keep the x86 launcher selected even when SteamCMD restarts after an update.
+    export STEAM_PLATFORM=linux32
     # Valve's launcher uses DEBUGGER to prefix the 32-bit SteamCMD binary.
     export DEBUGGER="\$runx64"
 fi
