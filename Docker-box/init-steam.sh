@@ -2,6 +2,17 @@
 set -euo pipefail
 
 if [ "$TARGETARCH" = "arm64" ]; then
+    # Ubuntu 26.04 serves arm64 on the main archive and armhf on Ubuntu Ports.
+    sed -i '/^Types: deb$/a Architectures-Remove: armhf' /etc/apt/sources.list.d/ubuntu.sources
+    . /etc/os-release
+    cat >/etc/apt/sources.list.d/ubuntu-armhf.sources <<EOF
+Types: deb
+URIs: http://ports.ubuntu.com/ubuntu-ports/
+Suites: ${VERSION_CODENAME} ${VERSION_CODENAME}-updates ${VERSION_CODENAME}-security ${VERSION_CODENAME}-backports
+Components: main universe restricted multiverse
+Architectures: armhf
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+EOF
     dpkg --add-architecture armhf
     apt update
     apt install -y libc6:armhf libpthread-stubs0-dev:armhf libncurses6:armhf libstdc++6:armhf
