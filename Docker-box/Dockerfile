@@ -1,4 +1,4 @@
-FROM ubuntu:25.04
+FROM ubuntu:26.04
 
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG TARGETARCH
@@ -50,7 +50,7 @@ ENV BOX64_LOG=0
 # Configure xvfb
 ENV DISPLAY=:0
 ENV XDG_DATA_DIRS=/root/wine/share:/usr/local/share:/usr/share
-ENV XDG_RUNTIME_DIR="/run/user/$(id -u)"
+ENV XDG_RUNTIME_DIR=/run/user/0
 RUN mkdir -p "$XDG_RUNTIME_DIR"
 RUN chmod 700 "$XDG_RUNTIME_DIR"
 

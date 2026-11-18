@@ -14,22 +14,21 @@ fi
 
 mkdir -p ~/steamcmd
 
-curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" \
+curl -fsSL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" \
   | tar -xz -C ~/steamcmd
 chmod +x ~/steamcmd/steamcmd.sh
 
-cat <<EOF >/usr/local/bin/steamcmd
+cat <<'EOF' >/usr/local/bin/steamcmd
 #!/bin/bash
-exec $runx64 "$HOME/steamcmd/steamcmd.sh" "\$@"
-EOF
-
-cat <<EOF >/usr/local/bin/steamcmd.sh
-#!/bin/bash
-exec $runx64 "$HOME/steamcmd/steamcmd.sh" "\$@"
+if [ -n "${runx64:-}" ]; then
+    # Valve's launcher uses DEBUGGER to prefix the 32-bit SteamCMD binary.
+    export DEBUGGER="$runx64"
+fi
+exec "$HOME/steamcmd/steamcmd.sh" "$@"
 EOF
 
 chmod +x /usr/local/bin/steamcmd
-chmod +x /usr/local/bin/steamcmd.sh
+ln -sf /usr/local/bin/steamcmd /usr/local/bin/steamcmd.sh
 
 # Run SteamCMD once to allow it to self-update and create folders
 steamcmd +quit

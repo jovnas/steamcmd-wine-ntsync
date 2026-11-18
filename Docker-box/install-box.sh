@@ -2,12 +2,17 @@
 set -euxo pipefail
 
 if [ "$TARGETARCH" = "amd64" ]; then
-    echo "Skipping box64 install on amd64"
+    echo "Skipping Box64 install on amd64"
     exit 0
 fi
 
-# Add repo box64 to source list and install box64
-wget https://ryanfortner.github.io/box64-debs/box64.list -O /etc/apt/sources.list.d/box64.list
-wget -qO- https://ryanfortner.github.io/box64-debs/KEY.gpg | gpg --dearmor -o /etc/apt/trusted.gpg.d/box64-debs-archive-keyring.gpg
-apt update
-apt install box64 -y
+BOX64_VERSION="v0.4.4"
+build_dir=$(mktemp -d)
+trap 'rm -rf "$build_dir"' EXIT
+
+apt-get install -y cmake
+git clone --depth 1 --branch "$BOX64_VERSION" https://github.com/ptitSeb/box64.git "$build_dir/src"
+# SteamCMD needs Box32 for its 32-bit Linux launcher.
+cmake -S "$build_dir/src" -B "$build_dir/build" -DARM64=ON -DBOX32=ON -DCMAKE_BUILD_TYPE=Release
+cmake --build "$build_dir/build" --parallel 2
+cmake --install "$build_dir/build"

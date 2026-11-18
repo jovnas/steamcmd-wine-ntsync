@@ -1,9 +1,21 @@
 ## Base information
-This image is based on Ubuntu 25.04 and Wine 10.11 with all the latest features — staging, TKG, NTSync, and WoW64. Additionally, wine-mono and vcrun 2022 (Visual C++ 2022 Redistributable) are preinstalled.  
+The current Box64 build uses Ubuntu 26.04, Wine 11.22, and Box64 0.4.4 with Box32 support. Its Wine build includes staging, TKG, NTSync, and WoW64. Additionally, wine-mono and vcrun 2022 (Visual C++ 2022 Redistributable) are preinstalled.
+
 This Docker build is designed to be compatible with https://hub.docker.com/r/steamcmd/steamcmd
 
 ## ARM64
 ARM64 compatibility is provided by Box64/Fex-emu/Hangover
+
+## Building the Box64 image on a Raspberry Pi 5
+
+On a Pi 5 running a 64-bit OS, build from this checkout and check that SteamCMD starts.
+
+```bash
+(cd Docker-box && bash build.sh)
+docker run --rm tsxcloud/steamcmd-wine-ntsync:11.22-arm64-box +help +quit
+```
+
+Use the local `tsxcloud/steamcmd-wine-ntsync:11.22-arm64-box` tag in your Valheim service's `image:` setting. Keep your existing world volumes and server configuration. Check the server logs for successful startup, then verify that a client can join.
 
 ## DockerHUB
 https://hub.docker.com/r/tsxcloud/steamcmd-wine-ntsync
