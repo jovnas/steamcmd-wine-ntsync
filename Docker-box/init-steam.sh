@@ -15,13 +15,15 @@ Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 EOF
     dpkg --add-architecture armhf
     apt-get update
-    apt-get install -y libc6:armhf libpthread-stubs0-dev:armhf libncurses6:armhf libstdc++6:armhf
+    apt-get install -y --no-install-recommends libc6:armhf libncurses6:armhf libstdc++6:armhf
 elif [ "$TARGETARCH" = "amd64" ]; then
     dpkg --add-architecture i386
     apt-get update
-    apt-get install -y libc6:i386 libpthread-stubs0-dev:i386 lib32gcc-s1 lib32stdc++6 lib32z1 libncurses6:i386
+    # Use the i386 multiarch directory for all 32-bit libraries.
+    apt-get install -y --no-install-recommends \
+        libc6:i386 libncurses6:i386 libstdc++6:i386 zlib1g:i386
 fi
-
+rm -rf /var/lib/apt/lists/*
 
 steamcmd_dir="$HOME/steamcmd"
 mkdir -p "$steamcmd_dir"
